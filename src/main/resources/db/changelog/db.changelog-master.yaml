@@ -599,6 +599,20 @@ databaseChangeLog:
                     constraints:
                       nullable: false
                     afterColumn: level_gunbreaker
-                    
+  - changeSet:
+      id: 12
+      author: graphicscore
+      changes:
+        - addColumn:
+            tableName: tblplayers
+            columns:
+              - column:
+                  name: level_bozja
+                  type: int(3)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+                  afterColumn: level_eureka
+
 
                     

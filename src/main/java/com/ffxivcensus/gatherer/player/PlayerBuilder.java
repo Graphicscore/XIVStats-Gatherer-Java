@@ -49,6 +49,10 @@ public class PlayerBuilder {
     private static final String LAYOUT_CHARACTER_BLOCK_BOX = "character-block__box";
     private static final String LAYOUT_FRAME_CHARA_WORLD = "frame__chara__world";
     private static final String LAYOUT_CHARACTER_BLOCK_NAME = "character-block__name";
+
+    private static final String LAYOUT_CHARACTER_JOB_LEVEL_OPTIONAL_BOZJA = "xiv-lds-resistance-level";
+    private static final String LAYOUT_CHARACTER_JOB_LEVEL_OPTIONAL_EUREKA = "xiv-lds-elemental-level";
+
     private static final Logger LOG = LoggerFactory.getLogger(PlayerBuilder.class);
     /**
      * Number of days inactivity before character is considered inactive
@@ -112,10 +116,11 @@ public class PlayerBuilder {
         player.setLevelMiner(arrLevels[26]);
         player.setLevelBotanist(arrLevels[27]);
         player.setLevelFisher(arrLevels[28]);
+        //player.setLevelSage(arrLevels[29]); //TODO for Endwalker
+        //player.setLevelReaper(arrLevels[30]); //TODO for Endwalker
         // Elemental Level is an optional component at the end of the section, so may not exist
-        if(arrLevels.length > 29) {
-            player.setLevelEureka(arrLevels[29]);
-        }
+        player.setLevelEureka(arrLevels[31]);
+        player.setLevelBozja(arrLevels[32]);
     }
 
     /**
@@ -374,7 +379,12 @@ public class PlayerBuilder {
         List<Integer> levels = new ArrayList<>();
 
         Element classJobTab = doc.getElementsByClass("character__content").get(0);
-        for(Element jobLevel : classJobTab.getElementsByClass(LAYOUT_CHARACTER_JOB_LEVEL)) {
+        Elements jobLevelElements = classJobTab.getElementsByClass(LAYOUT_CHARACTER_JOB_LEVEL);
+        for(int i = 0; i < jobLevelElements.size(); i++) {
+            if(i >= 29){ //skip eureka & bozja
+                continue;
+            }
+            Element jobLevel = jobLevelElements.get(i);
             String strLvl = jobLevel.text();
             if(strLvl.equals("-")) {
                 levels.add(0);
@@ -384,20 +394,42 @@ public class PlayerBuilder {
         }
 
         // Initialize int array
-        int[] arrLevels = new int[levels.size()];
+        int[] arrLevels = new int[33]; //fix level size to 33
         // Convert array list to array of ints
         for(int index = 0; index < levels.size(); index++) {
             arrLevels[index] = Integer.parseInt(levels.get(index).toString());
         }
 
+        //Eureka
+        arrLevels[31] = getOptionalClassLevel(classJobTab,LAYOUT_CHARACTER_JOB_LEVEL_OPTIONAL_EUREKA);
+        //Bozja
+        arrLevels[32] = getOptionalClassLevel(classJobTab,LAYOUT_CHARACTER_JOB_LEVEL_OPTIONAL_BOZJA);
+
         // Check if levels array is larger than this system is programmed for
         // As of 5.0, this is now 30 - SCH and SMN are 2 jobs, + SAM, RDM, BLU, GNB, DNC & Eureka
-        if(arrLevels.length > 30) {
-            throw new IllegalArgumentException("Error: More class levels found (" + arrLevels.length
-                                               + ") than anticipated (30). The class definitions need to be updated.");
-        }
+        /*if(arrLevels.length > 32) {
+            LOG.warn("Error: More class levels found (" + arrLevels.length
+                    + ") than anticipated (31). The class definitions need to be updated.");
+        }*/
 
         return arrLevels;
+    }
+
+    private int getOptionalClassLevel(Element classJobTab, String optionalClassName){
+        Element bozjaClassElement = classJobTab.getElementsByClass(optionalClassName).first();
+        if(bozjaClassElement != null){
+            Element bParent = bozjaClassElement.parent();
+            if(bParent != null){
+                bParent = bParent.parent();
+                if(bParent != null){
+                    Element jobElement = bParent.getElementsByClass(LAYOUT_CHARACTER_JOB_LEVEL).first();
+                    if(jobElement != null){
+                        return Integer.parseInt(jobElement.text());
+                    }
+                }
+            }
+        }
+        return 0;
     }
 
     /**
