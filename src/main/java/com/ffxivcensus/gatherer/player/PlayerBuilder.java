@@ -476,7 +476,7 @@ public class PlayerBuilder {
 
         strLastModifiedDate = strLastModifiedDate.replace("[", "");
         strLastModifiedDate = strLastModifiedDate.replace("]", "");
-        DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+        DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
 
         try {
             dateLastModified = dateFormat.parse(strLastModifiedDate);
