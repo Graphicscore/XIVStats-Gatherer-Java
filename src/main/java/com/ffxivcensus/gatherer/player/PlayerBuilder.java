@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
@@ -169,12 +166,20 @@ public class PlayerBuilder {
             setLevels(player, getLevelsFromPage(classJobDoc));
 
             // Mounts from the relevant sub-section
-            Document mountDoc = pageLoader.getMountPage(playerID);
-            player.setMounts(getMountsFromPage(mountDoc));
+            try {
+                Document mountDoc = pageLoader.getMountPage(playerID);
+                player.setMounts(getMountsFromPage(mountDoc));
+            }catch (CharacterDeletedException ex){ //char might not really be deleted
+                player.setMounts(Collections.emptyList());
+            }
 
             // Minions from the relevant sub-section
+            try{
             Document minionDoc = pageLoader.getMinionPage(playerID);
             player.setMinions(getMinionsFromPage(minionDoc));
+            }catch (CharacterDeletedException ex){ //char might not really be deleted
+                player.setMinions(Collections.emptyList());
+            }
 
             // Info based on the result of grabbing Mounts & Minions
             player.setHas30DaysSub(doesPlayerHaveMinion(player, "Wind-up Cursor"));
