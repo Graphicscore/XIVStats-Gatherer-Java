@@ -107,7 +107,7 @@ public class ProductionLodestonePageLoader implements LodestonePageLoader {
                     doc = getPage(url, characterId, attempt);
                     break;
                 case HttpStatus.SC_NOT_FOUND:
-                    LOG.info("Character {} does not exist. (404)", characterId);
+                    LOG.info("Character Data {} ({})does not exist. (404)", characterId,pageUrl);
                     throw new CharacterDeletedException();
                 default:
                     throw new IOException("Unexpected HTTP Status Code: " + httpe.getStatusCode(), httpe);
