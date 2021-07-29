@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.ffxivcensus.gatherer.edb.EorzeaDatabaseCache;
 import com.ffxivcensus.gatherer.lodestone.TestDataLodestonePageLoader;
@@ -12,18 +14,22 @@ public class PlayerBuilderTest {
 
     private PlayerBuilder instance;
     private static EorzeaDatabaseCache EDB_CACHE = new EorzeaDatabaseCache();
+    @Mock
+    private GearItemRepository gearItemRepository;
 
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         instance = new PlayerBuilder();
         // TODO: Figure out a mock of this
         instance.setEorzeaDatabaseCache(EDB_CACHE);
+        instance.setGearItemRepository(gearItemRepository);
     }
 
     @Test
     public void testLoadFrom2256025() throws Exception {
         instance.setPageLoader(new TestDataLodestonePageLoader());
-        PlayerBean player = instance.getPlayer(2256025);
+        PlayerBean player = instance.getPlayer(2256025, null);
 
         // NOTE: All of the following tests assume various pieces of information
         // Testing information that is very unlikely to change
@@ -142,12 +148,56 @@ public class PlayerBuilderTest {
         assertFalse(player.getMounts().contains("Cavalry Drake"));
         // Test for data from very end
         assertTrue(player.getMounts().contains("Midgardsormr"));
+
+        assertEquals("08372e63df2", player.getGearSet().getMainHand().getItemId());
+        assertEquals("Augmented Deepshadow Codex", player.getGearSet().getMainHand().getName());
+        assertEquals("Scholar's Arm", player.getGearSet().getMainHand().getCategory());
+        assertEquals(470, player.getGearSet().getMainHand().getiLevel());
+
+        assertEquals("4a2ae61210d", player.getGearSet().getHead().getItemId());
+        assertEquals("Augmented Deepshadow Hood of Healing", player.getGearSet().getHead().getName());
+
+        assertEquals("e7276bb2a56", player.getGearSet().getBody().getItemId());
+        assertEquals("Augmented Deepshadow Scale Mail of Healing", player.getGearSet().getBody().getName());
+
+        assertEquals("3804a54f06b", player.getGearSet().getHands().getItemId());
+        assertEquals("Augmented Deepshadow Armguards of Healing", player.getGearSet().getHands().getName());
+
+        assertEquals("e60f7637206", player.getGearSet().getBelt().getItemId());
+        assertEquals("Augmented Deepshadow Tassets of Healing", player.getGearSet().getBelt().getName());
+
+        assertEquals("9922348a266", player.getGearSet().getLegs().getItemId());
+        assertEquals("Augmented Deepshadow Breeches of Healing", player.getGearSet().getLegs().getName());
+
+        assertEquals("c4985948ea9", player.getGearSet().getFeet().getItemId());
+        assertEquals("Augmented Deepshadow Greaves of Healing", player.getGearSet().getFeet().getName());
+
+        assertNull(player.getGearSet().getOffHand());
+
+        assertEquals("6433817eadd", player.getGearSet().getEars().getItemId());
+        assertEquals("Augmented Deepshadow Earring of Healing", player.getGearSet().getEars().getName());
+
+        assertEquals("f6ff748e3da", player.getGearSet().getNeck().getItemId());
+        assertEquals("Augmented Deepshadow Necklace of Healing", player.getGearSet().getNeck().getName());
+
+        assertEquals("3f76ec4df01", player.getGearSet().getWrists().getItemId());
+        assertEquals("Augmented Deepshadow Bracelet of Healing", player.getGearSet().getWrists().getName());
+
+        assertEquals("f90266bb91f", player.getGearSet().getLeftHand().getItemId());
+        assertEquals("Edencall Ring of Healing", player.getGearSet().getLeftHand().getName());
+
+        assertEquals("22c8c0bb824", player.getGearSet().getRightHand().getItemId());
+        assertEquals("Augmented Deepshadow Ring of Healing", player.getGearSet().getRightHand().getName());
+
+        assertEquals("eb511e3871f", player.getGearSet().getJobCrystal().getItemId());
+        assertEquals("Soul of the Scholar", player.getGearSet().getJobCrystal().getName());
+
     }
 
     @Test
     public void testLoadFrom22763008() throws Exception {
         instance.setPageLoader(new TestDataLodestonePageLoader());
-        PlayerBean player = instance.getPlayer(22763008);
+        PlayerBean player = instance.getPlayer(22763008, null);
 
         // NOTE: All of the following tests assume various pieces of information
         // Testing information that is very unlikely to change

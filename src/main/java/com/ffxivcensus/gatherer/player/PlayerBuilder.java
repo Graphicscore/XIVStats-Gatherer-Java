@@ -64,6 +64,8 @@ public class PlayerBuilder {
     private LodestonePageLoader pageLoader = new ProductionLodestonePageLoader();
     private EorzeaDatabaseCache edbCache;
 
+    private GearItemRepository gearItemRepository;
+
     /**
      * Set player class levels.
      * As of 4.5, this is now parsed in the order:
@@ -151,10 +153,13 @@ public class PlayerBuilder {
      * @return the player object matching the specified ID.
      * @throws Exception exception thrown if more class levels returned than anticipated.
      */
-    public PlayerBean getPlayer(final int playerID) throws IOException, InterruptedException {
+    public PlayerBean getPlayer(final int playerID, final PlayerBean existing) throws IOException, InterruptedException {
         // Initialize player object to return
-        PlayerBean player = new PlayerBean();
-        player.setId(playerID);
+        PlayerBean player = existing;
+        if(existing == null) {
+            player = new PlayerBean();
+            player.setId(playerID);
+        }
         // Declare HTML document
         try {
             Document doc = pageLoader.getCharacterPage(playerID);
@@ -169,6 +174,7 @@ public class PlayerBuilder {
             
             Document classJobDoc = pageLoader.getClassJobPage(playerID);
             setLevels(player, getLevelsFromPage(classJobDoc));
+            player.setGearSet(getGearSet(player, doc));
 
             // Mounts from the relevant sub-section
             try {
@@ -242,6 +248,8 @@ public class PlayerBuilder {
         } catch(CharacterDeletedException cde) {
             player.setCharacterStatus(CharacterStatus.DELETED);
         }
+        // Update last checked date to today
+        player.setLastChecked(new Date());
         return player;
     }
 
@@ -524,6 +532,68 @@ public class PlayerBuilder {
         return dateLastModified;
     }
 
+    private GearSet getGearSet(final PlayerBean player, final Document doc) {
+        GearSet gearSet = player.getGearSet();
+        if(gearSet == null) {
+            gearSet = new GearSet();
+        }
+        gearSet.setPlayer(player);
+        gearSet.setPlayerId(player.getId());
+
+        Element characterView = doc.getElementsByClass("character__view").get(0);
+
+        gearSet.setMainHand(getGearItem(characterView, 0));
+
+        gearSet.setHead(getGearItem(characterView, 2));
+        gearSet.setBody(getGearItem(characterView, 3));
+        gearSet.setHands(getGearItem(characterView, 4));
+        gearSet.setBelt(getGearItem(characterView, 5));
+        gearSet.setLegs(getGearItem(characterView, 6));
+        gearSet.setFeet(getGearItem(characterView, 7));
+
+        gearSet.setOffHand(getGearItem(characterView, 1));
+        gearSet.setEars(getGearItem(characterView, 8));
+        gearSet.setNeck(getGearItem(characterView, 9));
+        gearSet.setWrists(getGearItem(characterView, 10));
+        gearSet.setLeftHand(getGearItem(characterView, 11));
+        gearSet.setRightHand(getGearItem(characterView, 12));
+        gearSet.setJobCrystal(getGearItem(characterView, 13));
+
+        return gearSet;
+    }
+
+    private GearItem getGearItem(final Element characterView, final int itemPosition) {
+        Element detail = characterView.getElementsByClass("icon-c--" + itemPosition).get(0);
+        Elements toolTips = detail.getElementsByClass("db-tooltip");
+
+        if(toolTips != null && !toolTips.isEmpty()) {
+            Element toolTip = toolTips.get(0);
+
+            // Get Eorzea Database ID
+            String[] dbUrl = toolTip.getElementsByClass("db-tooltip__bt_item_detail").get(0).getElementsByTag("a").get(0).attr("href")
+                                    .split("/");
+            String dbId = dbUrl[5];
+
+            GearItem item = gearItemRepository.findOne(dbId);
+
+            if(item == null) {
+                item = new GearItem();
+                item.setItemId(dbUrl[5]);
+            }
+
+            // Get Item Details
+            item.setName(toolTip.getElementsByClass("db-tooltip__item__name").get(0).text());
+            item.setCategory(toolTip.getElementsByClass("db-tooltip__item__category").get(0).text());
+            item.setiLevel(Integer.parseInt(toolTip.getElementsByClass("db-tooltip__item__level").get(0).text().split(" ")[2]));
+
+            gearItemRepository.save(item);
+
+            return item;
+        }
+
+        return null;
+    }
+
     /**
      * Sets a Loadestone Page Loader to use.
      * By default, the PlayerBuilder will be initiatsed with a {@link ProductionLodestonePageLoader}.
@@ -542,5 +612,13 @@ public class PlayerBuilder {
     @Autowired
     public void setEorzeaDatabaseCache(final EorzeaDatabaseCache edbCache) {
         this.edbCache = edbCache;
+    }
+
+    /**
+     * @param gearItemRepository the gearItemRepository to set
+     */
+    @Autowired
+    public void setGearItemRepository(GearItemRepository gearItemRepository) {
+        this.gearItemRepository = gearItemRepository;
     }
 }

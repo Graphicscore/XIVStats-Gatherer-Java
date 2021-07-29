@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import com.ffxivcensus.gatherer.util.StringListConverter;
 
@@ -32,6 +35,9 @@ public class PlayerBean {
     private String gender = NOT_AVAILABLE;
     private String grandCompany = NOT_AVAILABLE;
     private String freeCompany = NOT_AVAILABLE;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "playerId")
+    private GearSet gearSet;
     private int levelGladiator;
     private int levelPugilist;
     private int levelMarauder;
@@ -165,6 +171,7 @@ public class PlayerBean {
     private boolean isActive;
     @Enumerated(EnumType.STRING)
     private CharacterStatus characterStatus = CharacterStatus.ACTIVE;
+    private Date lastChecked;
 
     public PlayerBean() {
     }
@@ -867,5 +874,21 @@ public class PlayerBean {
 
     public void setCharacterStatus(final CharacterStatus characterStatus) {
         this.characterStatus = characterStatus;
+    }
+
+    public GearSet getGearSet() {
+        return gearSet;
+    }
+
+    public void setGearSet(GearSet gearSet) {
+        this.gearSet = gearSet;
+    }
+
+    public Date getLastChecked() {
+        return lastChecked;
+    }
+
+    public void setLastChecked(Date lastChecked) {
+        this.lastChecked = lastChecked;
     }
 }
