@@ -781,4 +781,18 @@ databaseChangeLog:
               type: date
               constraints:
                 nullable: true
+  - changeSet:
+      id: 18
+      author: graphicscore
+      changes:
+        - createIndex:
+            tableName: tblplayers
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: realm
+                  type: varchar(255)
+            indexName: idx_name_realm
                     
