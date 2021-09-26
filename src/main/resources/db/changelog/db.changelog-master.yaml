@@ -795,4 +795,52 @@ databaseChangeLog:
                   name: realm
                   type: varchar(255)
             indexName: idx_name_realm
-                    
+  - changeSet:
+      id: 19
+      author: graphicscore
+      changes:
+        - createTable:
+            tableName: character_mounts
+            columns:
+              - column:
+                  name: player_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_character
+                    references: tblplayers(id)
+              - column:
+                  name: mount_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 20
+      author: graphicscore
+      changes:
+        - createTable:
+            tableName: character_minions
+            columns:
+              - column:
+                  name: player_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_character
+                    references: tblplayers(id)
+              - column:
+                  name: minion_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
