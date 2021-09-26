@@ -48,6 +48,7 @@ public class CLIConstants {
                                   .desc("number of gatherer threads to run").build();
         Option optIgnoreSSLVerify = Option.builder("i").longOpt("ignore-ssl-verification")
                                           .desc("Supress/ignore MySQL SSL verification warnings").build();
+        Option skipTrailingDatabaseCleanup = Option.builder("S").longOpt("skip-database-cleanup").desc("Skip cleanup of trailing database ids").build();
 
         // Add each option to the options object
         options.addOption(optStart);
@@ -61,6 +62,7 @@ public class CLIConstants {
         options.addOption(optURL);
         options.addOption(optHelp);
         options.addOption(optIgnoreSSLVerify);
+        options.addOption(skipTrailingDatabaseCleanup);
 
         return options;
     }

@@ -178,6 +178,11 @@ public class ConfigurationBuilder {
             if(cmd.hasOption("t")) {
                 configuration.setThreadLimit(Integer.parseInt(cmd.getOptionValue("t")));
             }
+
+            //skip db cleanup
+            if(cmd.hasOption("S")) {
+                configuration.setSkipDatabaseCleanup(true);
+            }
         }
         return new ConfigurationBuilder(configuration);
     }
