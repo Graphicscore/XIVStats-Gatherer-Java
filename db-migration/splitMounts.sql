@@ -1,7 +1,7 @@
 DELIMITER $$
-DROP PROCEDURE IF EXISTS `dbplayers`.`SplitMountsIntoTable` $$
+DROP PROCEDURE IF EXISTS `dbplayers`.`SplitMountsToTable` $$
 CREATE
-    PROCEDURE `dbplayers`.`SplitMountsIntoTable`()
+    PROCEDURE `dbplayers`.`SplitMountsToTable`()
     BEGIN
 
 	DECLARE r_len INTEGER;
