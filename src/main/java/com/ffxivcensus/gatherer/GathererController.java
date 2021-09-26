@@ -119,6 +119,9 @@ public class GathererController {
         // Firstly, clean the top-end of the database
         LOG.debug("Cleaning top-end characters from the database");
         PlayerBean highestValid = playerRepository.findTopByCharacterStatusNotOrderByIdDesc(CharacterStatus.DELETED);
+        if(highestValid != null && highestValid.getId() > 0){
+            LOG.debug("Highest valid id : {}",highestValid.getId());
+        }
         // Delete everything higher than last known good player
         playerRepository.deleteByIdGreaterThan(highestValid != null ? highestValid.getId() : 0);
 
