@@ -1,9 +1,10 @@
-package com.ffxivcensus.gatherer.player.items;
+package com.ffxivcensus.gatherer.player.items.repositories;
 
 /**
  * @author graphicscore
  */
 
+import com.ffxivcensus.gatherer.player.items.data.Minion;
 import org.springframework.data.repository.CrudRepository;
 
 /**

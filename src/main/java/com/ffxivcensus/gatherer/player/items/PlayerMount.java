@@ -1,6 +1,7 @@
 package com.ffxivcensus.gatherer.player.items;
 
 import com.ffxivcensus.gatherer.player.PlayerBean;
+import com.ffxivcensus.gatherer.player.items.data.Mount;
 
 import javax.persistence.*;
 

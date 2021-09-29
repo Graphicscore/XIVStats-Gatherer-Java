@@ -7,9 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import com.ffxivcensus.gatherer.player.items.MinionRepository;
-import com.ffxivcensus.gatherer.player.items.Mount;
-import com.ffxivcensus.gatherer.player.items.MountRepository;
+import com.ffxivcensus.gatherer.player.items.repositories.MinionRepository;
+import com.ffxivcensus.gatherer.player.items.data.Mount;
+import com.ffxivcensus.gatherer.player.items.repositories.MountRepository;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

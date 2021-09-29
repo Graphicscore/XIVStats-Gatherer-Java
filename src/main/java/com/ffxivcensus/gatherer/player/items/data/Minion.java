@@ -1,18 +1,15 @@
-package com.ffxivcensus.gatherer.player.items;
+package com.ffxivcensus.gatherer.player.items.data;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Mount from the Lodestone / Eorzea Database
- *
  * @author graphicscore
  */
 @Entity
-@Table(name = "mounts")
-public class Mount {
+@Table(name = "minions")
+public class Minion {
 
     @Id
     private String id;
@@ -37,7 +34,7 @@ public class Mount {
 
     @Override
     public String toString() {
-        return "Mount{" +
+        return "Minion{" +
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 '}';

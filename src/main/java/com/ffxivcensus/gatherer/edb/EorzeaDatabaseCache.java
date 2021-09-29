@@ -2,14 +2,12 @@ package com.ffxivcensus.gatherer.edb;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.ffxivcensus.gatherer.player.items.Minion;
-import com.ffxivcensus.gatherer.player.items.MinionRepository;
-import com.ffxivcensus.gatherer.player.items.Mount;
-import com.ffxivcensus.gatherer.player.items.MountRepository;
-import jdk.internal.net.http.common.Pair;
+import com.ffxivcensus.gatherer.player.items.data.Minion;
+import com.ffxivcensus.gatherer.player.items.repositories.MinionRepository;
+import com.ffxivcensus.gatherer.player.items.data.Mount;
+import com.ffxivcensus.gatherer.player.items.repositories.MountRepository;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;

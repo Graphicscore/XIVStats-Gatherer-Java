@@ -1,6 +1,6 @@
-package com.ffxivcensus.gatherer.player.items;
+package com.ffxivcensus.gatherer.player.items.repositories;
 
-import com.ffxivcensus.gatherer.player.items.Mount;
+import com.ffxivcensus.gatherer.player.items.data.Mount;
 import org.springframework.data.repository.CrudRepository;
 
 /**
