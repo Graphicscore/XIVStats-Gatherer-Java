@@ -800,47 +800,134 @@ databaseChangeLog:
       author: graphicscore
       changes:
         - createTable:
+            tableName: mounts
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
             tableName: character_mounts
             columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
               - column:
                   name: player_id
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_character
+                    foreignKeyName: fk_character_mount
                     references: tblplayers(id)
               - column:
                   name: mount_id
                   type: varchar(255)
                   constraints:
                     nullable: true
-              - column:
-                  name: name
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
+                    foreignKeyName: fk_mount_id
+                    references: mounts(id)
   - changeSet:
       id: 20
       author: graphicscore
       changes:
         - createTable:
+            tableName: minions
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
             tableName: character_minions
             columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
               - column:
                   name: player_id
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_character
+                    foreignKeyName: fk_character_minion
                     references: tblplayers(id)
               - column:
                   name: minion_id
                   type: varchar(255)
                   constraints:
                     nullable: true
+                    foreignKeyName: fk_minion_id
+                    references: minions(id)
+  - changeSet:
+      id: 21
+      author: graphicscore
+      changes:
+        - createIndex:
+            tableName: mounts
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
               - column:
                   name: name
                   type: varchar(255)
-                  constraints:
-                    nullable: false
-
+            indexName: idx_mounts
+            unique: true
+        - createIndex:
+            tableName: character_mounts
+            columns:
+              - column:
+                  name: player_id
+                  type: int
+              - column:
+                  name: mount_id
+                  type: varchar(255)
+            indexName: idx_character_mounts
+            unique: true
+  - changeSet:
+      id: 22
+      author: graphicscore
+      changes:
+        - createIndex:
+            tableName: minions
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+              - column:
+                  name: name
+                  type: varchar(255)
+            indexName: idx_minions
+            unique: true
+        - createIndex:
+            tableName: character_minions
+            columns:
+              - column:
+                  name: player_id
+                  type: int
+              - column:
+                  name: minion_id
+                  type: varchar(255)
+            indexName: idx_character_minions
+            unique: true
