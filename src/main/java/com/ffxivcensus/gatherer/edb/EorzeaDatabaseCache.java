@@ -71,10 +71,11 @@ public class EorzeaDatabaseCache {
                     } catch (Exception ex){
                         LOG.error("Error caching minion {}", ex.getMessage());
                     }
-
-                    mounts.put(minion.getId(), minion.getName());
-                    LOG.debug("Cached minion {}", minion);
                 }
+            }
+            if(minion != null) {
+                mounts.put(minion.getId(), minion.getName());
+                LOG.debug("Cached minion {}", minion);
             }
         } else {
             minion = new Minion();
@@ -91,7 +92,7 @@ public class EorzeaDatabaseCache {
         String mountName = mounts.get(id);
         if(mountName == null){
             //get mount from database
-            mount= repository.findOne(id);
+            mount = repository.findOne(id);
             if(mount == null){
                 //read mount name from website and save to db
                 Document doc = loader.getTooltipPage(dataTooltipHref);
@@ -107,10 +108,11 @@ public class EorzeaDatabaseCache {
                     } catch (Exception ex){
                         LOG.error("Error caching mount {}", ex.getMessage());
                     }
-
-                    mounts.put(mount.getId(), mount.getName());
-                    LOG.debug("Cached mount {}", mount);
                 }
+            }
+            if(mount != null) {
+                mounts.put(mount.getId(), mount.getName());
+                LOG.debug("Cached mount {}", mount);
             }
         } else {
             mount = new Mount();

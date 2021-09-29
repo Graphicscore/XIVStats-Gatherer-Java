@@ -1,7 +1,7 @@
 package com.ffxivcensus.gatherer.player.items.relations;
 
 import com.ffxivcensus.gatherer.player.PlayerBean;
-import com.ffxivcensus.gatherer.player.items.data.Mount;
+import com.ffxivcensus.gatherer.player.items.data.Minion;
 
 import javax.persistence.*;
 
@@ -15,11 +15,26 @@ public class PlayerMinion {
     @Id
     private int id;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, optional = true)
+    @OneToOne
     @JoinColumn(name = "player_id", referencedColumnName = "id")
-    private PlayerBean player_id;
+    private PlayerBean playerId;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, optional = true)
-    @JoinColumn(name = "mount_id", referencedColumnName = "id")
-    private Mount mount_id;
+    @OneToOne
+    @JoinColumn(name = "minion_id", referencedColumnName = "id")
+    private Minion minionId;
+
+    public void setPlayerId(PlayerBean player_id) {
+        this.playerId = player_id;
+    }
+
+    public void setMinionId(Minion minion_id) {
+        this.minionId = minion_id;
+    }
+
+    public static PlayerMinion Create(PlayerBean player, Minion minion){
+        PlayerMinion result = new PlayerMinion();
+        result.setPlayerId(player);
+        result.setMinionId(minion);
+        return result;
+    }
 }
