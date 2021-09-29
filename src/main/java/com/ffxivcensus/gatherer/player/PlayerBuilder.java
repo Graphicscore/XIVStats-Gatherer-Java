@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import com.ffxivcensus.gatherer.player.items.MinionRepository;
+import com.ffxivcensus.gatherer.player.items.Mount;
+import com.ffxivcensus.gatherer.player.items.MountRepository;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,6 +68,9 @@ public class PlayerBuilder {
     private EorzeaDatabaseCache edbCache;
 
     private GearItemRepository gearItemRepository;
+
+    private MountRepository mountRepository;
+    private MinionRepository minionRepository;
 
     /**
      * Set player class levels.
@@ -620,5 +626,21 @@ public class PlayerBuilder {
     @Autowired
     public void setGearItemRepository(GearItemRepository gearItemRepository) {
         this.gearItemRepository = gearItemRepository;
+    }
+
+    /**
+     * @param mountRepository the mountRepository to set
+     */
+    @Autowired
+    public void setMountRepository(MountRepository mountRepository) {
+        this.mountRepository = mountRepository;
+    }
+
+    /**
+     * @param minionRepository the minionRepository to set
+     */
+    @Autowired
+    public void setMinionRepository(MinionRepository minionRepository) {
+        this.minionRepository = minionRepository;
     }
 }
