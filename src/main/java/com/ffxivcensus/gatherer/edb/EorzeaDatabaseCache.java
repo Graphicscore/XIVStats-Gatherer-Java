@@ -2,8 +2,14 @@ package com.ffxivcensus.gatherer.edb;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.ffxivcensus.gatherer.player.items.Minion;
+import com.ffxivcensus.gatherer.player.items.MinionRepository;
+import com.ffxivcensus.gatherer.player.items.Mount;
+import com.ffxivcensus.gatherer.player.items.MountRepository;
+import jdk.internal.net.http.common.Pair;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -19,8 +25,13 @@ import com.ffxivcensus.gatherer.lodestone.ProductionLodestonePageLoader;
  */
 public class EorzeaDatabaseCache {
 
+    /**
+     * We should store the mounts and minions in the databse, however we should store a copy of the values in memory for faster access
+     */
+
     private static final Logger LOG = LoggerFactory.getLogger(EorzeaDatabaseCache.class);
     private LodestonePageLoader loader = new ProductionLodestonePageLoader();
+
     private Map<String, String> minions = new ConcurrentHashMap<>();
     private Map<String, String> mounts = new ConcurrentHashMap<>();
 
@@ -39,6 +50,78 @@ public class EorzeaDatabaseCache {
         return name;
     }
 
+    public Minion getMinionFromTooltip(String dataTooltipHref, MinionRepository repository) throws IOException, InterruptedException {
+        String id = dataTooltipHref.substring(dataTooltipHref.lastIndexOf("/") + 1);
+        Minion minion = null;
+        //get mount name from memory cache
+        String mountName = mounts.get(id);
+        if(mountName == null){
+            //get mount from database
+            minion = repository.findOne(id);
+            if(minion == null){
+                //read mount name from website and save to db
+                Document doc = loader.getTooltipPage(dataTooltipHref);
+                Elements headers = doc.getElementsByClass("minion__header__label");
+                if(!headers.isEmpty()) {
+                    mountName = headers.get(0).text();
+
+                    minion = new Minion();
+                    minion.setId(id);
+                    minion.setName(mountName);
+                    try {
+                        repository.save(minion);
+                    } catch (Exception ex){
+                        LOG.error("Error caching minion {}", ex.getMessage());
+                    }
+
+                    mounts.put(minion.getId(), minion.getName());
+                    LOG.debug("Cached minion {}", minion);
+                }
+            }
+        } else {
+            minion = new Minion();
+            minion.setId(id);
+            minion.setName(mountName);
+        }
+        return minion;
+    }
+
+    public Mount getMountFromTooltip(String dataTooltipHref, MountRepository repository) throws IOException, InterruptedException {
+        String id = dataTooltipHref.substring(dataTooltipHref.lastIndexOf("/") + 1);
+        Mount mount = null;
+        //get mount name from memory cache
+        String mountName = mounts.get(id);
+        if(mountName == null){
+            //get mount from database
+            mount= repository.findOne(id);
+            if(mount == null){
+                //read mount name from website and save to db
+                Document doc = loader.getTooltipPage(dataTooltipHref);
+                Elements headers = doc.getElementsByClass("mount__header__label");
+                if(!headers.isEmpty()) {
+                    mountName = headers.get(0).text();
+
+                    mount = new Mount();
+                    mount.setId(id);
+                    mount.setName(mountName);
+                    try {
+                        repository.save(mount);
+                    } catch (Exception ex){
+                        LOG.error("Error caching mount {}", ex.getMessage());
+                    }
+
+                    mounts.put(mount.getId(), mount.getName());
+                    LOG.debug("Cached mount {}", mount);
+                }
+            }
+        } else {
+            mount = new Mount();
+            mount.setId(id);
+            mount.setName(mountName);
+        }
+        return mount;
+    }
+
     public String getMountNameFromTooltip(String dataTooltipHref) throws IOException, InterruptedException {
         String id = dataTooltipHref.substring(dataTooltipHref.lastIndexOf("/") + 1);
         String name = mounts.get(id);
@@ -53,9 +136,4 @@ public class EorzeaDatabaseCache {
         }
         return name;
     }
-
-    public void setLodestonePageLoader(LodestonePageLoader loader) {
-        this.loader = loader;
-    }
-
 }
