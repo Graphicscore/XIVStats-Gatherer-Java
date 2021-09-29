@@ -128,7 +128,7 @@ public class GathererController {
             // Delete everything higher than last known good player
             playerRepository.deleteByIdGreaterThan(highestValid != null ? highestValid.getId() : 0);
         } else {
-            Log.info("Skip Database cleanup because of CLI argument -S");
+            LOG.info("Skip Database cleanup because of CLI argument -S");
         }
 
         // Setup the gathering parameters
