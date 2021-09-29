@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.ffxivcensus.gatherer.edb.EorzeaDatabaseCache;
 import com.ffxivcensus.gatherer.player.CharacterStatus;
-import com.ffxivcensus.gatherer.player.GearItemRepository;
+import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
 import com.ffxivcensus.gatherer.player.PlayerBean;
 import com.ffxivcensus.gatherer.player.PlayerBeanRepository;
 import com.ffxivcensus.gatherer.player.PlayerBuilder;

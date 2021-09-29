@@ -1,4 +1,4 @@
-package com.ffxivcensus.gatherer.player.items;
+package com.ffxivcensus.gatherer.player.items.relations;
 
 import com.ffxivcensus.gatherer.player.PlayerBean;
 import com.ffxivcensus.gatherer.player.items.data.Mount;
@@ -9,8 +9,8 @@ import javax.persistence.*;
  * @author graphicscore
  */
 @Entity
-@Table(name = "character_mounts")
-public class PlayerMount {
+@Table(name = "character_minions")
+public class PlayerMinion {
 
     @Id
     private int id;

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
+import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,8 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.ffxivcensus.gatherer.edb.EorzeaDatabaseCache;
-import com.ffxivcensus.gatherer.player.PlayerBean;
-import com.ffxivcensus.gatherer.player.PlayerBuilder;
 
 /**
  * JUnit test class to test the methods of the Player class.

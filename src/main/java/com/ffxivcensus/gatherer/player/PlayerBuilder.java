@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import com.ffxivcensus.gatherer.player.items.data.GearItem;
+import com.ffxivcensus.gatherer.player.items.relations.GearSet;
+import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
 import com.ffxivcensus.gatherer.player.items.repositories.MinionRepository;
 import com.ffxivcensus.gatherer.player.items.data.Mount;
 import com.ffxivcensus.gatherer.player.items.repositories.MountRepository;

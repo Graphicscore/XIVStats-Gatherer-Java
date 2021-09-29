@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.ffxivcensus.gatherer.player.items.relations.GearSet;
 import com.ffxivcensus.gatherer.util.StringListConverter;
 
 /**
