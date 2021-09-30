@@ -164,7 +164,7 @@ public class PlayerBean {
     @Column(name = "minions")
     @Convert(converter = StringListConverter.class)
     private List<String> minions = new ArrayList<>();
-    @Column(name = "mounts")
+    @Column(name = "mounts") //TODO Maybe we have to re-add the only way of parsing the mounts to save them for one full scrape...
     @Convert(converter = StringListConverter.class)
     private List<String> mounts = new ArrayList<>();
     @Column(name = "date_active")

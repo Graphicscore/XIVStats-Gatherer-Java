@@ -405,7 +405,7 @@ public class PlayerBuilder {
         Element classJobTab = doc.getElementsByClass("character__content").get(0);
         Elements jobLevelElements = classJobTab.getElementsByClass(LAYOUT_CHARACTER_JOB_LEVEL);
         for(int i = 0; i < jobLevelElements.size(); i++) {
-            if(i >= 29){ //skip eureka & bozja
+            if(i >= 29){ //TODO Endwalker jobs
                 continue;
             }
             Element jobLevel = jobLevelElements.get(i);
