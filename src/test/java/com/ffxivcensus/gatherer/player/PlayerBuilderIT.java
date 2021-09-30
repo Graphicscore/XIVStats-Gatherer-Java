@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
-import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
+import com.ffxivcensus.gatherer.player.items.repositories.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,6 +31,15 @@ public class PlayerBuilderIT {
     @Mock
     private GearItemRepository gearItemRepository;
 
+    @Mock
+    private MountRepository mountRepository;
+    @Mock
+    private MinionRepository minionRepository;
+    @Mock
+    private PlayerMountRepository playerMountRepository;
+    @Mock
+    private PlayerMinionRepository playerMinionRepository;
+
     @BeforeClass
     public static void beforeClass() {
         edbCache = new EorzeaDatabaseCache();
@@ -42,6 +51,10 @@ public class PlayerBuilderIT {
         instance = new PlayerBuilder();
         instance.setEorzeaDatabaseCache(edbCache);
         instance.setGearItemRepository(gearItemRepository);
+        instance.setMountRepository(mountRepository);
+        instance.setMinionRepository(minionRepository);
+        instance.setPlayerMountRepository(playerMountRepository);
+        instance.setPlayerMinionRepository(playerMinionRepository);
     }
 
     @After

@@ -2,7 +2,7 @@ package com.ffxivcensus.gatherer.player;
 
 import static org.junit.Assert.*;
 
-import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
+import com.ffxivcensus.gatherer.player.items.repositories.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,6 +18,15 @@ public class PlayerBuilderTest {
     @Mock
     private GearItemRepository gearItemRepository;
 
+    @Mock
+    private MountRepository mountRepository;
+    @Mock
+    private MinionRepository minionRepository;
+    @Mock
+    private PlayerMountRepository playerMountRepository;
+    @Mock
+    private PlayerMinionRepository playerMinionRepository;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -25,6 +34,10 @@ public class PlayerBuilderTest {
         // TODO: Figure out a mock of this
         instance.setEorzeaDatabaseCache(EDB_CACHE);
         instance.setGearItemRepository(gearItemRepository);
+        instance.setMountRepository(mountRepository);
+        instance.setMinionRepository(minionRepository);
+        instance.setPlayerMountRepository(playerMountRepository);
+        instance.setPlayerMinionRepository(playerMinionRepository);
     }
 
     @Test
