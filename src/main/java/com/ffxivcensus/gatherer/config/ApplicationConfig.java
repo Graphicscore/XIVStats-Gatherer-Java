@@ -63,6 +63,11 @@ public class ApplicationConfig {
      */
     private int threadLimit = MAX_THREADS;
 
+    /**
+     * Wheter the databse should be cleaned upon start (trailing empty ids)
+     */
+    private boolean skipDatabaseCleanup = false;
+
     //////////////////////////
     // Gathering Configuration
     //////////////////////////
@@ -140,6 +145,14 @@ public class ApplicationConfig {
 
     public void setThreadLimit(int threadLimit) {
         this.threadLimit = threadLimit;
+    }
+
+    public boolean shouldSkipDatabaseCleanup() {
+        return skipDatabaseCleanup;
+    }
+
+    public void setSkipDatabaseCleanup(boolean skipDatabaseCleanup) {
+        this.skipDatabaseCleanup = skipDatabaseCleanup;
     }
 
     //////////////////////////

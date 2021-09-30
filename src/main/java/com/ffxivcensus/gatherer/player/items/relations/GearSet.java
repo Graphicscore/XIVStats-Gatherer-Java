@@ -1,4 +1,7 @@
-package com.ffxivcensus.gatherer.player;
+package com.ffxivcensus.gatherer.player.items.relations;
+
+import com.ffxivcensus.gatherer.player.PlayerBean;
+import com.ffxivcensus.gatherer.player.items.data.GearItem;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

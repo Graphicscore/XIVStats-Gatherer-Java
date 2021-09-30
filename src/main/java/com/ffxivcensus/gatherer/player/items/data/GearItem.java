@@ -1,4 +1,4 @@
-package com.ffxivcensus.gatherer.player;
+package com.ffxivcensus.gatherer.player.items.data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

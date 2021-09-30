@@ -7,6 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import com.ffxivcensus.gatherer.player.items.data.GearItem;
+import com.ffxivcensus.gatherer.player.items.data.Minion;
+import com.ffxivcensus.gatherer.player.items.relations.GearSet;
+import com.ffxivcensus.gatherer.player.items.relations.PlayerMinion;
+import com.ffxivcensus.gatherer.player.items.relations.PlayerMount;
+import com.ffxivcensus.gatherer.player.items.repositories.*;
+import com.ffxivcensus.gatherer.player.items.data.Mount;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,6 +72,12 @@ public class PlayerBuilder {
     private EorzeaDatabaseCache edbCache;
 
     private GearItemRepository gearItemRepository;
+
+    private MountRepository mountRepository;
+    private MinionRepository minionRepository;
+
+    private PlayerMountRepository playerMountRepository;
+    private PlayerMinionRepository playerMinionRepository;
 
     /**
      * Set player class levels.
@@ -176,10 +189,12 @@ public class PlayerBuilder {
             setLevels(player, getLevelsFromPage(classJobDoc));
             player.setGearSet(getGearSet(player, doc));
 
+
             // Mounts from the relevant sub-section
             try {
                 Document mountDoc = pageLoader.getMountPage(playerID);
-                player.setMounts(getMountsFromPage(mountDoc));
+                gatherMounts(player, mountDoc);
+                //player.setMounts(getMountsFromPage(mountDoc));
             }catch (CharacterDeletedException ex){ //char might not really be deleted
                 player.setMounts(Collections.emptyList());
             }
@@ -187,7 +202,8 @@ public class PlayerBuilder {
             // Minions from the relevant sub-section
             try{
             Document minionDoc = pageLoader.getMinionPage(playerID);
-            player.setMinions(getMinionsFromPage(minionDoc));
+            gatherMinions(player, minionDoc);
+            //player.setMinions(getMinionsFromPage(minionDoc));
             }catch (CharacterDeletedException ex){ //char might not really be deleted
                 player.setMinions(Collections.emptyList());
             }
@@ -389,7 +405,7 @@ public class PlayerBuilder {
         Element classJobTab = doc.getElementsByClass("character__content").get(0);
         Elements jobLevelElements = classJobTab.getElementsByClass(LAYOUT_CHARACTER_JOB_LEVEL);
         for(int i = 0; i < jobLevelElements.size(); i++) {
-            if(i >= 29){ //skip eureka & bozja
+            if(i >= 29){ //TODO Endwalker jobs
                 continue;
             }
             Element jobLevel = jobLevelElements.get(i);
@@ -440,60 +456,41 @@ public class PlayerBuilder {
         return 0;
     }
 
-    /**
-     * Get the set of minions from a page.
-     *
-     * @param doc the lodestone profile page to parse.
-     * @return the set of strings representing the player's minions.
-     * @throws InterruptedException 
-     * @throws IOException 
-     */
-    private List<String> getMinionsFromPage(final Document doc) throws IOException, InterruptedException {
-
-        // Initialize array in which to store minions
-        List<String> minions = new ArrayList<>();
+    private void gatherMinions(final PlayerBean player, final Document doc) throws IOException, InterruptedException {
         // Get minion box element
         Elements minionBoxes = doc.getElementsByClass(LAYOUT_CHARACTER_MINION);
         // Get mounts
         if(!minionBoxes.isEmpty()) {
             Elements minionSet = minionBoxes.get(0).getElementsByTag(TAG_LI);
-            for(Element minion : minionSet) {
-                String minionName = edbCache.getMinionNameFromTooltip(minion.attr("data-tooltip_href"));
-                if(minionName != null) {
-                    minions.add(minionName);
+            for(Element minionEl : minionSet) {
+                Minion minion = edbCache.getMinionFromTooltip(minionEl.attr("data-tooltip_href"), minionRepository);
+
+                PlayerMinion playerMinion = playerMinionRepository.findByPlayerIdAndMinionId(player,minion);
+                if(playerMinion == null){
+                    playerMinion = PlayerMinion.Create(player, minion);
+                    playerMinionRepository.save(playerMinion);
                 }
             }
         }
-        return minions;
     }
 
-    /**
-     * Get the set of mounts from a page.
-     *
-     * @param doc the lodestone profile page to parse.
-     * @return the set of strings representing the player's mounts.
-     * @throws InterruptedException
-     * @throws IOException
-     */
-    private List<String> getMountsFromPage(final Document doc) throws IOException, InterruptedException {
-
-        // Initialize array in which to store minions
-        List<String> mounts = new ArrayList<>();
-
+    private void gatherMounts(final PlayerBean player, final Document doc) throws IOException, InterruptedException {
         // Get minion box element
         Elements mountBoxes = doc.getElementsByClass(LAYOUT_CHARACTER_MOUNTS);
         // Get mounts
         if(!mountBoxes.isEmpty()) {
             Elements mountSet = mountBoxes.get(0).getElementsByTag(TAG_LI);
-            for(Element mount : mountSet) {
-                String mountName = edbCache.getMountNameFromTooltip(mount.attr("data-tooltip_href"));
-                if(mountName != null) {
-                    mounts.add(mountName);
+            for(Element mountEl : mountSet) {
+                Mount mount = edbCache.getMountFromTooltip(mountEl.attr("data-tooltip_href"), mountRepository);
+                PlayerMount playerMount = playerMountRepository.findByPlayerIdAndMountId(player,mount);
+                if(playerMount == null){
+                    playerMount = PlayerMount.Create(player, mount);
+                    playerMountRepository.save(playerMount);
                 }
             }
         }
-        return mounts;
     }
+
 
     /**
      * Gets the last-modified date of the Character full body image.
@@ -620,5 +617,31 @@ public class PlayerBuilder {
     @Autowired
     public void setGearItemRepository(GearItemRepository gearItemRepository) {
         this.gearItemRepository = gearItemRepository;
+    }
+
+    /**
+     * @param mountRepository the mountRepository to set
+     */
+    @Autowired
+    public void setMountRepository(MountRepository mountRepository) {
+        this.mountRepository = mountRepository;
+    }
+
+    /**
+     * @param minionRepository the minionRepository to set
+     */
+    @Autowired
+    public void setMinionRepository(MinionRepository minionRepository) {
+        this.minionRepository = minionRepository;
+    }
+
+    @Autowired
+    public void setPlayerMountRepository(PlayerMountRepository playerMountRepository) {
+        this.playerMountRepository = playerMountRepository;
+    }
+
+    @Autowired
+    public void setPlayerMinionRepository(PlayerMinionRepository playerMinionRepository) {
+        this.playerMinionRepository = playerMinionRepository;
     }
 }

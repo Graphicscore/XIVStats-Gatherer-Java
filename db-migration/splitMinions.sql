@@ -1,7 +1,7 @@
 DELIMITER $$
-DROP PROCEDURE IF EXISTS `dbplayers`.`SplitMinionsIntoTable` $$
+DROP PROCEDURE IF EXISTS `dbplayers`.`SplitMinionsToTable` $$
 CREATE
-    PROCEDURE `dbplayers`.`SplitMinionsIntoTable`()
+    PROCEDURE `dbplayers`.`SplitMinionsToTable`()
     BEGIN
 
 	DECLARE r_len INTEGER;

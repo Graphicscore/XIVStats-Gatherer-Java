@@ -2,6 +2,7 @@ package com.ffxivcensus.gatherer.player;
 
 import static org.junit.Assert.*;
 
+import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

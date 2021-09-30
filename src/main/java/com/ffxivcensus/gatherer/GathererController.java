@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import jdk.internal.org.jline.utils.Log;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,8 +123,13 @@ public class GathererController {
         if(highestValid != null && highestValid.getId() > 0){
             LOG.debug("Highest valid id : {}",highestValid.getId());
         }
-        // Delete everything higher than last known good player
-        playerRepository.deleteByIdGreaterThan(highestValid != null ? highestValid.getId() : 0);
+
+        if(!appConfig.shouldSkipDatabaseCleanup()) {
+            // Delete everything higher than last known good player
+            playerRepository.deleteByIdGreaterThan(highestValid != null ? highestValid.getId() : 0);
+        } else {
+            LOG.info("Skip Database cleanup because of CLI argument -S");
+        }
 
         // Setup the gathering parameters
         gatheringStatus.setStartId(startId);
