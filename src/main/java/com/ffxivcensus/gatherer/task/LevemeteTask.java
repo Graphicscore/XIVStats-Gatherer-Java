@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.ffxivcensus.gatherer.GatheringStatus;
 
 /**
- * Runnable task managing the distribution and setup of {@see Gatherer} tasks into the {@see ExecutorService}.
- * This job will cease when the {@see ExecutorService} stops accepting new jobs, as indicated by the
- * service throwing a new {@see RejectedExecutionException}.
+ * Runnable task managing the distribution and setup of {@link GathererTask}s into the {@link #gathererExecutor}.
+ * This job will cease when the  {@link #gathererExecutor} stops accepting new jobs, as indicated by the
+ * service throwing a new {@link RejectedExecutionException}.
  * 
  * @author matthew.hillier
  */

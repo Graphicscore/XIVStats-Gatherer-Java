@@ -162,9 +162,9 @@ public class PlayerBuilder {
      * Fetch a player from the lodestone specified by ID.
      *
      * @param playerID the ID of the player to fetch
-     * @param attempt the number of times this character has been attempted.
      * @return the player object matching the specified ID.
-     * @throws Exception exception thrown if more class levels returned than anticipated.
+     * @throws IOException thrown if more class levels returned than anticipated.
+     * @throws InterruptedException on shutdown
      */
     public PlayerBean getPlayer(final int playerID, final PlayerBean existing) throws IOException, InterruptedException {
         // Initialize player object to return

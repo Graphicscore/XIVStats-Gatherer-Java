@@ -11,7 +11,7 @@ import com.ffxivcensus.gatherer.player.PlayerBean;
 import com.ffxivcensus.gatherer.player.PlayerBeanRepository;
 
 /**
- * Runnable task managing the shutdown criteria of the gathering process, by managing the {@see ExecutorService}.
+ * Runnable task managing the shutdown criteria of the gathering process, by managing the {@link #gathererExecutor}.
  * 
  * @author matthew.hillier
  */

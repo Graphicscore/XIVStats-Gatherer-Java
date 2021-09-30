@@ -16,6 +16,7 @@ repositories {
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -50,13 +51,17 @@ dependencies {
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
     }
     testImplementation 'junit:junit-dep:4.10'
-    testImplementation 'org.mockito:mockito-core:2.11.0'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
 }
 
 group = 'com.ffxivcensus.gatherer'
 version = 'v2.0.0'
 description = 'XIVStats Lodestone Gatherer'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
 
 publishing {
     publications {
