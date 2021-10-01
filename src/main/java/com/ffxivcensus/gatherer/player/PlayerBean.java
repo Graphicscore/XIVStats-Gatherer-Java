@@ -4,17 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.ffxivcensus.gatherer.player.items.data.Minion;
+import com.ffxivcensus.gatherer.player.items.data.Mount;
 import com.ffxivcensus.gatherer.player.items.relations.GearSet;
 import com.ffxivcensus.gatherer.util.StringListConverter;
 
@@ -161,12 +154,6 @@ public class PlayerBean {
     private boolean hasCompleted3pt3;
     @Column(name = "legacy_player")
     private boolean isLegacyPlayer;
-    @Column(name = "minions")
-    @Convert(converter = StringListConverter.class)
-    private List<String> minions = new ArrayList<>();
-    @Column(name = "mounts") //TODO Maybe we have to re-add the only way of parsing the mounts to save them for one full scrape...
-    @Convert(converter = StringListConverter.class)
-    private List<String> mounts = new ArrayList<>();
     @Column(name = "date_active")
     private Date dateImgLastModified;
     @Column(name = "is_active")
@@ -174,6 +161,11 @@ public class PlayerBean {
     @Enumerated(EnumType.STRING)
     private CharacterStatus characterStatus = CharacterStatus.ACTIVE;
     private Date lastChecked;
+
+    @Transient
+    private List<Minion> minions = new ArrayList<>();
+    @Transient
+    private List<Mount> mounts = new ArrayList<>();
 
     public PlayerBean() {
     }
@@ -838,19 +830,19 @@ public class PlayerBean {
         this.isLegacyPlayer = isLegacyPlayer;
     }
 
-    public List<String> getMinions() {
+    public List<Minion> getMinions() {
         return minions;
     }
 
-    public void setMinions(final List<String> minions) {
+    public void setMinions(final List<Minion> minions) {
         this.minions = minions;
     }
 
-    public List<String> getMounts() {
+    public List<Mount> getMounts() {
         return mounts;
     }
 
-    public void setMounts(final List<String> mounts) {
+    public void setMounts(final List<Mount> mounts) {
         this.mounts = mounts;
     }
 
