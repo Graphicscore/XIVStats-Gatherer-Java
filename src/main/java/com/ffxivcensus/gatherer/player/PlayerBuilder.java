@@ -145,7 +145,7 @@ public class PlayerBuilder {
      * @return whether the player has the specified mount.
      */
     public boolean doesPlayerHaveMount(final PlayerBean player, final String mountName) {
-        return player.getMounts().contains(mountName);
+        return player.getMounts().stream().anyMatch(o -> o.getName().equals(mountName));
     }
 
     /**
@@ -155,16 +155,16 @@ public class PlayerBuilder {
      * @return whether the player has the specified minion.
      */
     public boolean doesPlayerHaveMinion(final PlayerBean player, final String minionName) {
-        return player.getMinions().contains(minionName);
+        return player.getMinions().stream().anyMatch(o -> o.getName().equals(minionName));
     }
 
     /**
      * Fetch a player from the lodestone specified by ID.
      *
      * @param playerID the ID of the player to fetch
-     * @param attempt the number of times this character has been attempted.
      * @return the player object matching the specified ID.
-     * @throws Exception exception thrown if more class levels returned than anticipated.
+     * @throws IOException thrown if more class levels returned than anticipated.
+     * @throws InterruptedException on shutdown
      */
     public PlayerBean getPlayer(final int playerID, final PlayerBean existing) throws IOException, InterruptedException {
         // Initialize player object to return
@@ -193,7 +193,7 @@ public class PlayerBuilder {
             // Mounts from the relevant sub-section
             try {
                 Document mountDoc = pageLoader.getMountPage(playerID);
-                gatherMounts(player, mountDoc);
+                player.setMounts(gatherMounts(player, mountDoc));
                 //player.setMounts(getMountsFromPage(mountDoc));
             }catch (CharacterDeletedException ex){ //char might not really be deleted
                 player.setMounts(Collections.emptyList());
@@ -202,7 +202,7 @@ public class PlayerBuilder {
             // Minions from the relevant sub-section
             try{
             Document minionDoc = pageLoader.getMinionPage(playerID);
-            gatherMinions(player, minionDoc);
+            player.setMinions(gatherMinions(player, minionDoc));
             //player.setMinions(getMinionsFromPage(minionDoc));
             }catch (CharacterDeletedException ex){ //char might not really be deleted
                 player.setMinions(Collections.emptyList());
@@ -456,7 +456,8 @@ public class PlayerBuilder {
         return 0;
     }
 
-    private void gatherMinions(final PlayerBean player, final Document doc) throws IOException, InterruptedException {
+    private List<Minion> gatherMinions(final PlayerBean player, final Document doc) throws IOException, InterruptedException {
+        List<Minion> result = new ArrayList<>();
         // Get minion box element
         Elements minionBoxes = doc.getElementsByClass(LAYOUT_CHARACTER_MINION);
         // Get mounts
@@ -464,17 +465,19 @@ public class PlayerBuilder {
             Elements minionSet = minionBoxes.get(0).getElementsByTag(TAG_LI);
             for(Element minionEl : minionSet) {
                 Minion minion = edbCache.getMinionFromTooltip(minionEl.attr("data-tooltip_href"), minionRepository);
-
                 PlayerMinion playerMinion = playerMinionRepository.findByPlayerIdAndMinionId(player,minion);
                 if(playerMinion == null){
                     playerMinion = PlayerMinion.Create(player, minion);
                     playerMinionRepository.save(playerMinion);
                 }
+                result.add(minion);
             }
         }
+        return result;
     }
 
-    private void gatherMounts(final PlayerBean player, final Document doc) throws IOException, InterruptedException {
+    private List<Mount> gatherMounts(final PlayerBean player, final Document doc) throws IOException, InterruptedException {
+        List<Mount> result = new ArrayList<>();
         // Get minion box element
         Elements mountBoxes = doc.getElementsByClass(LAYOUT_CHARACTER_MOUNTS);
         // Get mounts
@@ -487,8 +490,10 @@ public class PlayerBuilder {
                     playerMount = PlayerMount.Create(player, mount);
                     playerMountRepository.save(playerMount);
                 }
+                result.add(mount);
             }
         }
+        return result;
     }
 
 

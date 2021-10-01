@@ -34,7 +34,6 @@ public class Console implements CommandLineRunner {
      * Run the program provided a set of arguments.
      * 
      * @param args arguments to supply to the system.
-     * @return the gatherer controller built up.
      */
     public void run(final String... args) {
         try {

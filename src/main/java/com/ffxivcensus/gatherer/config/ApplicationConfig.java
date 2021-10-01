@@ -2,17 +2,6 @@ package com.ffxivcensus.gatherer.config;
 
 /**
  * Application configuration bean encapsulating all of the configuration options available for configuration.
- * By default, the following sensible defaults are set:
- * <dl>
- * <dt>{@link #dbUrl}</dt>
- * <dd>{@link #DEFAULT_DATABASE_HOST}</dd>
- * <dt>{@link #quiet}</dt>
- * <dd>true</dd>
- * <dt>{@link #storeProgression}</dt>
- * <dd>true</dt>
- * <dt>{@link #dbIgnoreSSLWarn}</dt>
- * <dd>true</dd>
- * </dl>
  * 
  * @author matthew.hillier
  */

@@ -3,6 +3,7 @@ package com.ffxivcensus.gatherer.player.items.data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * @author graphicscore

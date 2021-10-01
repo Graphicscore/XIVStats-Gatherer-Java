@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ffxivcensus.gatherer.player.items.repositories.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,18 +16,26 @@ import org.mockito.MockitoAnnotations;
 
 import com.ffxivcensus.gatherer.edb.EorzeaDatabaseCache;
 import com.ffxivcensus.gatherer.player.CharacterStatus;
-import com.ffxivcensus.gatherer.player.items.repositories.GearItemRepository;
 import com.ffxivcensus.gatherer.player.PlayerBean;
 import com.ffxivcensus.gatherer.player.PlayerBeanRepository;
 import com.ffxivcensus.gatherer.player.PlayerBuilder;
 
 public class GathererTaskTest {
 
+    private GathererTask instance;
+
     @Mock
     private PlayerBeanRepository mockRepo;
     @Mock
     private GearItemRepository gearRepo;
-    private GathererTask instance;
+    @Mock
+    private MountRepository mountRepository;
+    @Mock
+    private MinionRepository minionRepository;
+    @Mock
+    private PlayerMountRepository playerMountRepository;
+    @Mock
+    private PlayerMinionRepository playerMinionRepository;
 
     @Before
     public void setUp() {
@@ -36,6 +45,10 @@ public class GathererTaskTest {
         PlayerBuilder builder = new PlayerBuilder();
         builder.setEorzeaDatabaseCache(new EorzeaDatabaseCache());
         builder.setGearItemRepository(gearRepo);
+        builder.setMountRepository(mountRepository);
+        builder.setMinionRepository(minionRepository);
+        builder.setPlayerMountRepository(playerMountRepository);
+        builder.setPlayerMinionRepository(playerMinionRepository);
         instance.setPlayerBuilder(builder);
     }
 

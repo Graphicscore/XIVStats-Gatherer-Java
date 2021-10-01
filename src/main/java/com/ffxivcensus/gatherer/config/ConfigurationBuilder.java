@@ -59,7 +59,7 @@ public class ConfigurationBuilder {
     }
 
     /**
-     * Creates a new {@link ConfigurationBuilder} instance, passing in the given {@link ApplicationConfiguration} object.
+     * Creates a new {@link ConfigurationBuilder} instance, passing in the given {@link ApplicationConfig} object.
      * This is private to ensure that other callers cannot intercept and replace the {@link ApplicationConfig} bean by accident.
      * 
      * @param configuration {@link ApplicationConfig} bean to be used with the new instance of the {@link ConfigurationBuilder}.
@@ -71,7 +71,6 @@ public class ConfigurationBuilder {
     /**
      * Load the application configuration from the config,xml file, assuming it can be found.
      *
-     * @param filePath Path to the configuration file.
      * @return New {@link ConfigurationBuilder} containing the updated Configuration bean and ready to be further configured.
      * @throws ParserConfigurationException Indicates a serious configuration error.
      * @throws IOException Indicates an error reading the file specified.

@@ -16,7 +16,7 @@ import com.ffxivcensus.gatherer.lodestone.LodestonePageLoader;
 import com.ffxivcensus.gatherer.lodestone.ProductionLodestonePageLoader;
 
 /**
- * Provides a wrapper around accessing Mounts & Minions from the web servers, caching responses so that we don't have to wait on HTTP
+ * Provides a wrapper around accessing Mounts &uml; Minions from the web servers, caching responses so that we don't have to wait on HTTP
  * requests for anything we've already looked up.
  * 
  * @author matthew.hillier

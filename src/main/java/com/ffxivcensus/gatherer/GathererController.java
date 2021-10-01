@@ -6,7 +6,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import jdk.internal.org.jline.utils.Log;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +54,10 @@ public class GathererController {
 
     /**
      * Start the gatherer controller instance up.
-     * 
-     * @throws ParseException
-     * @throws Exception Exception thrown if system is incorrectly configured.
+     *
+     * @throws Exception thrown if system is incorrectly configured.
      */
-    public void run() throws ParseException {
+    public void run() throws Exception {
         // Store start time
         long startTime = System.currentTimeMillis();
 
