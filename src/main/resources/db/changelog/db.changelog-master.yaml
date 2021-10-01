@@ -931,3 +931,13 @@ databaseChangeLog:
                   type: varchar(255)
             indexName: idx_character_minions
             unique: true
+  - changeSet:
+      id: 23
+      author: graphicscore
+      changes:
+        - dropColumn:
+            columnName: mounts
+            tableName: tblplayers
+        - dropColumn:
+            columnName: minions
+            tableName: tblplayers
