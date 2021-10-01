@@ -81,20 +81,14 @@ Follow these steps to setup XIVStats-Gatherer-Java:
   |-t            | --threads             | integer        | number of gatherer thrads to running                                 |
   |-u            | --user                | String         | database user                                                        |
   |-U            | --url                 | String         | the database URL of the database server to connect to                |
+  |-S            | --skip-database-cleanup | none         | skip database cleanup of top id range                                |
   
 
   Note: On Linux/Unix it is advised to run the program in Tmux/Screen or similar.
   
 ## Logging
-Running the JAR will generate 2 log files, in a ```/.ffxivcensus/``` folder in the user's home directory.
-There are 2 log files produced:
-- ```gatherer.log```
-    - A record of all debug logging generated during the gathering run
-- ```progress.log```
-    - A simple per-character result log to enable tracking of progress
-    - _Note: As characters are threaded, there is no guarantee the characters will be presented in this log in sequential order_
-
-Logs are currently overwritten with each run, so in the event you wish to save a log file, please re-name or copy the desired file for later review.
+Running the JAR will generate a log file, in a ```/.ffxivcensus/``` folder in the user's home directory.
+The log is a rolling log, capped at a 500M each with 5 archives.
 
 ## Bugs and feature requests
 
