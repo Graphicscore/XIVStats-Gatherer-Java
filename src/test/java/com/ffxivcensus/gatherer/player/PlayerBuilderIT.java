@@ -111,7 +111,7 @@ public class PlayerBuilderIT {
         assertTrue(playerOne.getLevelThaumaturge() >= 60);
         assertTrue(playerOne.getLevelArcanist() >= 60);
         assertTrue(playerOne.getLevelRedmage() >= 70);
-        assertTrue(playerOne.getLevelBluemage() <= 60);
+        assertTrue(playerOne.getLevelBluemage() >= 60);
 
         // Healer
         assertTrue(playerOne.getLevelConjurer() >= 60);
