@@ -181,19 +181,19 @@ public class PlayerBuilderIT {
 
         // Test minions string
         // Test for data near start
-        assertTrue(playerOne.getMinions().contains("Wayward Hatchling"));
+        assertTrue(instance.doesPlayerHaveMinion(playerOne, "Wayward Hatchling"));
         // Test for data in middle
-        assertTrue(playerOne.getMinions().contains("Morbol Seedling"));
+        assertTrue(instance.doesPlayerHaveMinion(playerOne,"Morbol Seedling"));
         // Test for data from end
-        assertTrue(playerOne.getMinions().contains("Wind-up Sun"));
+        assertTrue(instance.doesPlayerHaveMinion(playerOne,"Wind-up Sun"));
 
         // Test mounts string
         // Test for data from (near) start
-        assertTrue(playerOne.getMounts().contains("Company Chocobo"));
+        assertTrue(instance.doesPlayerHaveMount(playerOne,"Company Chocobo"));
         // Test for data from middle
-        assertTrue(playerOne.getMounts().contains("Cavalry Drake"));
+        assertTrue(instance.doesPlayerHaveMount(playerOne,"Cavalry Drake"));
         // Test for data from very end
-        assertTrue(playerOne.getMounts().contains("Midgardsormr"));
+        assertTrue(instance.doesPlayerHaveMount(playerOne,"Midgardsormr"));
 
         // Is active
         // assertTrue(playerOne.isActive());

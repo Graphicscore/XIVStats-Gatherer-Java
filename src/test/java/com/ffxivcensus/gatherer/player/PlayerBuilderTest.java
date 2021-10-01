@@ -149,19 +149,19 @@ public class PlayerBuilderTest {
 
         // Test minions string
         // Test for data near start
-        assertTrue(player.getMinions().contains("Wayward Hatchling"));
+        assertFalse(instance.doesPlayerHaveMinion(player,"Wayward Hatchling"));
         // Test for data in middle
-        assertTrue(player.getMinions().contains("Morbol Seedling"));
+        assertFalse(instance.doesPlayerHaveMinion(player,"Morbol Seedling"));
         // Test for data from end
-        assertTrue(player.getMinions().contains("Wind-up Sun"));
+        assertFalse(instance.doesPlayerHaveMinion(player,"Wind-up Sun"));
 
         // Test mounts string
         // Test for data from (near) start
-        assertTrue(player.getMounts().contains("Company Chocobo"));
+        assertTrue(instance.doesPlayerHaveMount(player,"Company Chocobo"));
         // Test for data from middle
-        assertFalse(player.getMounts().contains("Cavalry Drake"));
+        assertFalse(instance.doesPlayerHaveMount(player,"Cavalry Drake"));
         // Test for data from very end
-        assertTrue(player.getMounts().contains("Midgardsormr"));
+        assertFalse(instance.doesPlayerHaveMount(player,"Midgardsormr"));
 
         assertEquals("08372e63df2", player.getGearSet().getMainHand().getItemId());
         assertEquals("Augmented Deepshadow Codex", player.getGearSet().getMainHand().getName());
@@ -317,19 +317,19 @@ public class PlayerBuilderTest {
 
         // Test minions string
         // Test for data near start
-        assertFalse(player.getMinions().contains("Wayward Hatchling"));
+        assertFalse(instance.doesPlayerHaveMinion(player,"Wayward Hatchling"));
         // Test for data in middle
-        assertFalse(player.getMinions().contains("Morbol Seedling"));
+        assertFalse(instance.doesPlayerHaveMinion(player,"Morbol Seedling"));
         // Test for data from end
-        assertFalse(player.getMinions().contains("Wind-up Sun"));
+        assertFalse(instance.doesPlayerHaveMinion(player,"Wind-up Sun"));
 
         // Test mounts string
         // Test for data from (near) start
-        assertTrue(player.getMounts().contains("Company Chocobo"));
+        assertTrue(instance.doesPlayerHaveMount(player,"Company Chocobo"));
         // Test for data from middle
-        assertFalse(player.getMounts().contains("Cavalry Drake"));
+        assertFalse(instance.doesPlayerHaveMount(player,"Cavalry Drake"));
         // Test for data from very end
-        assertFalse(player.getMounts().contains("Midgardsormr"));
+        assertFalse(instance.doesPlayerHaveMount(player,"Midgardsormr"));
     }
 
 }
