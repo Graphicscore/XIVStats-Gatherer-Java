@@ -16,7 +16,7 @@ public class ApplicationConfig {
     /**
      * Safety limit for thread count - user cannot exceed this limit.
      */
-    public static final int MAX_THREADS = 64;
+    public static final int MAX_THREADS = 256;
 
     /////////////////////////
     // Database Configuration
