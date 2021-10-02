@@ -464,13 +464,17 @@ public class PlayerBuilder {
         if(!minionBoxes.isEmpty()) {
             Elements minionSet = minionBoxes.get(0).getElementsByTag(TAG_LI);
             for(Element minionEl : minionSet) {
-                Minion minion = edbCache.getMinionFromTooltip(minionEl.attr("data-tooltip_href"), minionRepository);
-                PlayerMinion playerMinion = playerMinionRepository.findByPlayerIdAndMinionId(player,minion);
-                if(playerMinion == null){
-                    playerMinion = PlayerMinion.Create(player, minion);
-                    playerMinionRepository.save(playerMinion);
+                Optional<Minion> minion = edbCache.getMinionFromTooltip(minionEl.attr("data-tooltip_href"), minionRepository);
+                if(minion.isPresent()) {
+                    PlayerMinion playerMinion = playerMinionRepository.findByPlayerIdAndMinionId(player, minion.get());
+                    if (playerMinion == null) {
+                        playerMinion = PlayerMinion.Create(player, minion.get());
+                        playerMinionRepository.save(playerMinion);
+                    }
+                    result.add(minion.get());
+                } else {
+                    LOG.error("Optional Minion is null");
                 }
-                result.add(minion);
             }
         }
         return result;
@@ -484,13 +488,15 @@ public class PlayerBuilder {
         if(!mountBoxes.isEmpty()) {
             Elements mountSet = mountBoxes.get(0).getElementsByTag(TAG_LI);
             for(Element mountEl : mountSet) {
-                Mount mount = edbCache.getMountFromTooltip(mountEl.attr("data-tooltip_href"), mountRepository);
-                PlayerMount playerMount = playerMountRepository.findByPlayerIdAndMountId(player,mount);
-                if(playerMount == null){
-                    playerMount = PlayerMount.Create(player, mount);
-                    playerMountRepository.save(playerMount);
+                Optional<Mount> mount = edbCache.getMountFromTooltip(mountEl.attr("data-tooltip_href"), mountRepository);
+                if(mount.isPresent()) {
+                    PlayerMount playerMount = playerMountRepository.findByPlayerIdAndMountId(player, mount.get());
+                    if (playerMount == null) {
+                        playerMount = PlayerMount.Create(player, mount.get());
+                        playerMountRepository.save(playerMount);
+                    }
+                    result.add(mount.get());
                 }
-                result.add(mount);
             }
         }
         return result;
@@ -576,11 +582,13 @@ public class PlayerBuilder {
                                     .split("/");
             String dbId = dbUrl[5];
 
-            GearItem item = gearItemRepository.findOne(dbId);
-
-            if(item == null) {
+            Optional<GearItem> itemOpt = gearItemRepository.findById(dbId);
+            GearItem item;
+            if(!itemOpt.isPresent()) {
                 item = new GearItem();
                 item.setItemId(dbUrl[5]);
+            } else {
+                item = itemOpt.get();
             }
 
             // Get Item Details

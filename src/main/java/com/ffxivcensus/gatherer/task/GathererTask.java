@@ -10,6 +10,8 @@ import com.ffxivcensus.gatherer.player.PlayerBean;
 import com.ffxivcensus.gatherer.player.PlayerBeanRepository;
 import com.ffxivcensus.gatherer.player.PlayerBuilder;
 
+import java.util.Optional;
+
 /**
  * Gatherer worker class that implements Runnable class.
  * <p>
@@ -39,7 +41,11 @@ public class GathererTask implements Runnable {
             LOG.debug("Starting evaluation of player ID: {}", getPlayerId());
 
             // Check whether we already know about this character
-            PlayerBean player = playerRepository.findOne(getPlayerId());
+            Optional<PlayerBean> playerOpt =  playerRepository.findById(getPlayerId());
+            PlayerBean player = null;
+            if(playerOpt.isPresent()){
+                player = playerOpt.get();
+            }
             if(player == null || !CharacterStatus.DELETED.equals(player.getCharacterStatus())) {
                 // Only update characters that have not been deleted
                 player = playerBuilder.getPlayer(getPlayerId(), player);

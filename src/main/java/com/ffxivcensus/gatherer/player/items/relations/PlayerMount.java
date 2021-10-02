@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class PlayerMount {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToOne

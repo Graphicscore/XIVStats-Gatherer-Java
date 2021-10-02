@@ -2,6 +2,7 @@ package com.ffxivcensus.gatherer.edb;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.ffxivcensus.gatherer.player.items.data.Minion;
@@ -14,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ffxivcensus.gatherer.lodestone.LodestonePageLoader;
 import com.ffxivcensus.gatherer.lodestone.ProductionLodestonePageLoader;
+
+import javax.swing.text.html.Option;
 
 /**
  * Provides a wrapper around accessing Mounts &uml; Minions from the web servers, caching responses so that we don't have to wait on HTTP
@@ -48,76 +51,80 @@ public class EorzeaDatabaseCache {
         return name;
     }
 
-    public Minion getMinionFromTooltip(String dataTooltipHref, MinionRepository repository) throws IOException, InterruptedException {
+    public Optional<Minion> getMinionFromTooltip(String dataTooltipHref, MinionRepository repository) throws IOException, InterruptedException {
         String id = dataTooltipHref.substring(dataTooltipHref.lastIndexOf("/") + 1);
-        Minion minion = null;
+        Optional<Minion> minion;
         //get mount name from memory cache
-        String mountName = mounts.get(id);
+        String mountName = minions.get(id);
         if(mountName == null){
             //get mount from database
-            minion = repository.findOne(id);
-            if(minion == null){
+            minion = repository.findById(id);
+            if(!minion.isPresent()){
                 //read mount name from website and save to db
                 Document doc = loader.getTooltipPage(dataTooltipHref);
                 Elements headers = doc.getElementsByClass("minion__header__label");
                 if(!headers.isEmpty()) {
                     mountName = headers.get(0).text();
 
-                    minion = new Minion();
-                    minion.setId(id);
-                    minion.setName(mountName);
+                    Minion cminion = new Minion();
+                    cminion.setId(id);
+                    cminion.setName(mountName);
+                    minion = Optional.of(cminion);
                     try {
-                        repository.save(minion);
+                        repository.save(cminion);
                     } catch (Exception ex){
                         LOG.error("Error caching minion {}", ex.getMessage());
                     }
                 }
             }
-            if(minion != null) {
-                mounts.put(minion.getId(), minion.getName());
+            if(minion.isPresent()) {
+                minions.put(minion.get().getId(), minion.get().getName());
                 LOG.debug("Cached minion {}", minion);
             }
         } else {
-            minion = new Minion();
-            minion.setId(id);
-            minion.setName(mountName);
+            Minion cminion = new Minion();
+            cminion.setId(id);
+            cminion.setName(mountName);
+            minion = Optional.of(cminion);
         }
         return minion;
     }
 
-    public Mount getMountFromTooltip(String dataTooltipHref, MountRepository repository) throws IOException, InterruptedException {
+    public Optional<Mount> getMountFromTooltip(String dataTooltipHref, MountRepository repository) throws IOException, InterruptedException {
         String id = dataTooltipHref.substring(dataTooltipHref.lastIndexOf("/") + 1);
-        Mount mount = null;
+        Optional<Mount> mount;
         //get mount name from memory cache
         String mountName = mounts.get(id);
         if(mountName == null){
             //get mount from database
-            mount = repository.findOne(id);
-            if(mount == null){
+            mount = repository.findById(id);
+            if(!mount.isPresent()){
                 //read mount name from website and save to db
                 Document doc = loader.getTooltipPage(dataTooltipHref);
                 Elements headers = doc.getElementsByClass("mount__header__label");
                 if(!headers.isEmpty()) {
                     mountName = headers.get(0).text();
 
-                    mount = new Mount();
-                    mount.setId(id);
-                    mount.setName(mountName);
+                    Mount cmount = new Mount();
+                    cmount.setId(id);
+                    cmount.setName(mountName);
+                    mount = Optional.of(cmount);
                     try {
-                        repository.save(mount);
+                        repository.save(cmount);
                     } catch (Exception ex){
                         LOG.error("Error caching mount {}", ex.getMessage());
                     }
                 }
             }
-            if(mount != null) {
-                mounts.put(mount.getId(), mount.getName());
+            if(mount.isPresent()) {
+                mounts.put(mount.get().getId(), mount.get().getName());
                 LOG.debug("Cached mount {}", mount);
             }
         } else {
-            mount = new Mount();
-            mount.setId(id);
-            mount.setName(mountName);
+            Mount cmount = new Mount();
+            cmount.setId(id);
+            cmount.setName(mountName);
+            mount = Optional.of(cmount);
         }
         return mount;
     }
