@@ -123,6 +123,7 @@ public class GathererController {
         }
 
         if(!appConfig.shouldSkipDatabaseCleanup()) {
+            LOG.info("Cleanup Database...");
             // Delete everything higher than last known good player
             playerRepository.deleteByIdGreaterThan(highestValid != null ? highestValid.getId() : 0);
         } else {
