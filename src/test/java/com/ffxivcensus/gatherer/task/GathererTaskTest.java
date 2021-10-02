@@ -59,7 +59,7 @@ public class GathererTaskTest {
 
     @Test
     public void runWithSuccess() {
-        when(mockRepo.findById(Mockito.anyInt())).thenReturn(null);
+        //when(mockRepo.findById(Mockito.anyInt())).thenReturn(null);
 
         ArgumentCaptor<PlayerBean> argument = ArgumentCaptor.forClass(PlayerBean.class);
 
@@ -73,7 +73,7 @@ public class GathererTaskTest {
 
     @Test
     public void runWithError() {
-        doThrow(RuntimeException.class).when(mockRepo).findById(Mockito.anyInt());
+        //doThrow(RuntimeException.class).when(mockRepo).findById(Mockito.anyInt());
         instance.run();
     }
 
