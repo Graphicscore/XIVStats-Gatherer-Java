@@ -948,3 +948,13 @@ databaseChangeLog:
         - dropForeignKeyConstraint:
             baseTableName: character_gear_sets
             constraintName: fk_character
+  - changeSet:
+      id: 25
+      author: graphicscore
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: character_minions
+            constraintName: fk_character_minion
+        - dropForeignKeyConstraint:
+            baseTableName: character_mounts
+            constraintName: fk_character_mount
