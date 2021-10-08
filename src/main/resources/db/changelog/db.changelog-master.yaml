@@ -941,3 +941,10 @@ databaseChangeLog:
         - dropColumn:
             columnName: minions
             tableName: tblplayers
+  - changeSet:
+      id: 24
+      author: graphicscore
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: character_gear_sets
+            constraintName: fk_character
