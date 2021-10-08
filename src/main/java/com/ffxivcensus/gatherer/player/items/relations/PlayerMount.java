@@ -17,34 +17,32 @@ public class PlayerMount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
     @JoinColumn(name = "player_id", referencedColumnName = "id")
-    private PlayerBean playerId;
+    private int playerId;
 
-    @OneToOne
     @JoinColumn(name = "mount_id", referencedColumnName = "id")
-    private Mount mountId;
+    private String mountId;
 
-    public PlayerBean getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(PlayerBean player_id) {
+    public void setPlayerId(int player_id) {
         this.playerId = player_id;
     }
 
-    public Mount getMountId() {
+    public String getMountId() {
         return mountId;
     }
 
-    public void setMountId(Mount mount_id) {
+    public void setMountId(String mount_id) {
         this.mountId = mount_id;
     }
 
-    public static PlayerMount Create(PlayerBean player, Mount mount){
+    public static PlayerMount Create(int playerId, String mountId){
         PlayerMount result = new PlayerMount();
-        result.setPlayerId(player);
-        result.setMountId(mount);
+        result.setPlayerId(playerId);
+        result.setMountId(mountId);
         return result;
     }
 }

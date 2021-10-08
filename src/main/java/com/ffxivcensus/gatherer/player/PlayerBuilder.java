@@ -466,9 +466,9 @@ public class PlayerBuilder {
             for(Element minionEl : minionSet) {
                 Optional<Minion> minion = edbCache.getMinionFromTooltip(minionEl.attr("data-tooltip_href"), minionRepository);
                 if(minion.isPresent()) {
-                    PlayerMinion playerMinion = playerMinionRepository.findByPlayerIdAndMinionId(player, minion.get());
+                    PlayerMinion playerMinion = playerMinionRepository.findByPlayerIdAndMinionId(player.getId(), minion.get().getId());
                     if (playerMinion == null) {
-                        playerMinion = PlayerMinion.Create(player, minion.get());
+                        playerMinion = PlayerMinion.Create(player.getId(), minion.get().getId());
                         playerMinionRepository.save(playerMinion);
                     }
                     result.add(minion.get());
@@ -490,9 +490,9 @@ public class PlayerBuilder {
             for(Element mountEl : mountSet) {
                 Optional<Mount> mount = edbCache.getMountFromTooltip(mountEl.attr("data-tooltip_href"), mountRepository);
                 if(mount.isPresent()) {
-                    PlayerMount playerMount = playerMountRepository.findByPlayerIdAndMountId(player, mount.get());
+                    PlayerMount playerMount = playerMountRepository.findByPlayerIdAndMountId(player.getId(), mount.get().getId());
                     if (playerMount == null) {
-                        playerMount = PlayerMount.Create(player, mount.get());
+                        playerMount = PlayerMount.Create(player.getId(), mount.get().getId());
                         playerMountRepository.save(playerMount);
                     }
                     result.add(mount.get());
@@ -596,7 +596,11 @@ public class PlayerBuilder {
             item.setCategory(toolTip.getElementsByClass("db-tooltip__item__category").get(0).text());
             item.setiLevel(Integer.parseInt(toolTip.getElementsByClass("db-tooltip__item__level").get(0).text().split(" ")[2]));
 
-            gearItemRepository.save(item);
+            synchronized (this) {
+                if(!gearItemRepository.findById(dbId).isPresent()) {
+                    gearItemRepository.save(item);
+                }
+            }
 
             return item;
         }

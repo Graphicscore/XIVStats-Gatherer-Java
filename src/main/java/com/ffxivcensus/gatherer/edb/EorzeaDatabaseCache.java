@@ -71,7 +71,9 @@ public class EorzeaDatabaseCache {
                     cminion.setName(mountName);
                     minion = Optional.of(cminion);
                     try {
-                        repository.save(cminion);
+                        if(!repository.findById(id).isPresent()) {
+                            repository.save(cminion);
+                        }
                     } catch (Exception ex){
                         LOG.error("Error caching minion {}", ex.getMessage());
                     }
@@ -110,7 +112,11 @@ public class EorzeaDatabaseCache {
                     cmount.setName(mountName);
                     mount = Optional.of(cmount);
                     try {
-                        repository.save(cmount);
+                        synchronized (this) {
+                            if(!repository.findById(id).isPresent()) {
+                                repository.save(cmount);
+                            }
+                        }
                     } catch (Exception ex){
                         LOG.error("Error caching mount {}", ex.getMessage());
                     }

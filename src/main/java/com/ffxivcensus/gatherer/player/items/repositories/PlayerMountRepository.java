@@ -9,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author graphicscore
  */
 public interface PlayerMountRepository extends CrudRepository<PlayerMount, String> {
-    PlayerMount findByPlayerIdAndMountId(PlayerBean playerId, Mount mountId);
+    PlayerMount findByPlayerIdAndMountId(int playerId, String mountId);
 }

@@ -10,5 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface PlayerMinionRepository extends CrudRepository<PlayerMinion, String> {
 
-    PlayerMinion findByPlayerIdAndMinionId(PlayerBean playerId, Minion minion);
+    PlayerMinion findByPlayerIdAndMinionId(int playerId, String minionId);
 }

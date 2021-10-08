@@ -15,26 +15,24 @@ public class PlayerMinion {
     @Id
     private int id;
 
-    @OneToOne
     @JoinColumn(name = "player_id", referencedColumnName = "id")
-    private PlayerBean playerId;
+    private int playerId;
 
-    @OneToOne
     @JoinColumn(name = "minion_id", referencedColumnName = "id")
-    private Minion minionId;
+    private String minionId;
 
-    public void setPlayerId(PlayerBean player_id) {
+    public void setPlayerId(int player_id) {
         this.playerId = player_id;
     }
 
-    public void setMinionId(Minion minion_id) {
+    public void setMinionId(String minion_id) {
         this.minionId = minion_id;
     }
 
-    public static PlayerMinion Create(PlayerBean player, Minion minion){
+    public static PlayerMinion Create(int playerId, String minionId){
         PlayerMinion result = new PlayerMinion();
-        result.setPlayerId(player);
-        result.setMinionId(minion);
+        result.setPlayerId(playerId);
+        result.setMinionId(minionId);
         return result;
     }
 }

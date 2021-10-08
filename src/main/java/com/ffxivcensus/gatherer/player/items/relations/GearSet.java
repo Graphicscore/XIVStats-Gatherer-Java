@@ -3,12 +3,7 @@ package com.ffxivcensus.gatherer.player.items.relations;
 import com.ffxivcensus.gatherer.player.PlayerBean;
 import com.ffxivcensus.gatherer.player.items.data.GearItem;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * A Gear Set assigned to the player at the time of parsing.
