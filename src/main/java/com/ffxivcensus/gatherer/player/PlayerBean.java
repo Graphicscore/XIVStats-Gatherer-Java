@@ -20,7 +20,7 @@ import com.ffxivcensus.gatherer.util.StringListConverter;
  */
 @Entity
 @Table(name = "tblplayers")
-public class PlayerBean {
+public class PlayerBean implements Cloneable{
     private static final String NOT_AVAILABLE = "N/A";
     @Id
     private int id;
@@ -470,6 +470,8 @@ public class PlayerBean {
         this.levelBozja = levelBozja;
     }
 
+    public int getLevelBozja() { return this.levelBozja; }
+
     public boolean isHas30DaysSub() {
         return has30DaysSub;
     }
@@ -884,5 +886,69 @@ public class PlayerBean {
 
     public void setLastChecked(Date lastChecked) {
         this.lastChecked = lastChecked;
+    }
+
+    public boolean hasChanged(PlayerBean op) {
+        if(op == null) return true;
+        //compare levels first, this should be fast because its only integer comparison
+        if(getLevelGladiator() != op.getLevelGladiator()) return true;
+        if(getLevelPugilist() != op.getLevelPugilist()) return true;
+        if(getLevelMarauder() != op.getLevelMarauder()) return true;
+        if(getLevelLancer() != op.getLevelLancer()) return true;
+        if(getLevelArcher() != op.getLevelArcher()) return true;
+        if(getLevelRogue() != op.getLevelRogue()) return true;
+        if(getLevelConjurer() != op.getLevelConjurer()) return true;
+        if(getLevelThaumaturge() != op.getLevelThaumaturge()) return true;
+        if(getLevelArcanist() != op.getLevelArcanist()) return true;
+        if(getLevelDarkknight() != op.getLevelDarkknight()) return true;
+        if(getLevelMachinist() != op.getLevelMachinist()) return true;
+        if(getLevelAstrologian() != op.getLevelAstrologian()) return true;
+        if(getLevelScholar() != op.getLevelScholar()) return true;
+        if(getLevelRedmage() != op.getLevelRedmage()) return true;
+        if(getLevelSamurai() != op.getLevelSamurai()) return true;
+        if(getLevelBluemage() != op.getLevelBluemage()) return true;
+        if(getLevelGunbreaker() != op.getLevelGunbreaker()) return true;
+        if(getLevelDancer() != op.getLevelDancer()) return true;
+        if(getLevelCarpenter() != op.getLevelCarpenter()) return true;
+        if(getLevelBlacksmith() != op.getLevelBlacksmith()) return true;
+        if(getLevelArmorer() != op.getLevelArmorer()) return true;
+        if(getLevelGoldsmith() != op.getLevelGoldsmith()) return true;
+        if(getLevelLeatherworker() != op.getLevelLeatherworker()) return true;
+        if(getLevelWeaver() != op.getLevelWeaver()) return true;
+        if(getLevelAlchemist() != op.getLevelAlchemist()) return true;
+        if(getLevelCulinarian() != op.getLevelCulinarian()) return true;
+        if(getLevelMiner() != op.getLevelMiner()) return true;
+        if(getLevelBotanist() != op.getLevelBotanist()) return true;
+        if(getLevelFisher() != op.getLevelFisher()) return true;
+
+        if(getLevelEureka() != op.getLevelEureka()) return true;
+        if(getLevelBozja() != op.getLevelBozja()) return true;
+
+        //compare mounts
+        if(getMinions().size() != op.getMinions().size()) return true;
+        if(getMounts().size() != op.getMounts().size()) return true;
+
+        //compare gear
+        if(getGearSet().hasChanged(op.getGearSet())) return true;
+
+        //compare basic character data
+        if(!getRealm().contentEquals(op.getRealm())) return true;
+        if(!getPlayerName().contentEquals(op.getPlayerName())) return true;
+        if(!getRace().contentEquals(op.getRace())) return true;
+        if(!getGender().contentEquals(op.getGender())) return true;
+        if(!getGrandCompany().contentEquals(op.getGrandCompany())) return true;
+        if(!getFreeCompany().contentEquals(op.getFreeCompany())) return true;
+        return false;
+    }
+
+    @Override
+    public PlayerBean clone() {
+        try {
+            PlayerBean clone = (PlayerBean) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

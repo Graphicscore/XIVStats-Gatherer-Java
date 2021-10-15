@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "minions")
-public class Minion {
+public class Minion implements Cloneable{
 
     @Id
     private String id;
@@ -39,5 +39,16 @@ public class Minion {
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 '}';
+    }
+
+    @Override
+    public Minion clone() {
+        try {
+            Minion clone = (Minion) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

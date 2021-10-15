@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "character_gear_sets")
-public class GearSet {
+public class GearSet implements Cloneable{
 
     @Id
     private int playerId;
@@ -189,4 +189,41 @@ public class GearSet {
         this.jobCrystal = jobCrystal;
     }
 
+    public boolean hasChanged(GearSet os){
+        if(compareItem(getMainHand(),os.getMainHand())) return true;
+        if(compareItem(getHead(),os.getHead())) return true;
+        if(compareItem(getBody(),os.getBody())) return true;
+        if(compareItem(getHands(),os.getHands())) return true;
+        if(compareItem(getBelt(),os.getBelt())) return true;
+        if(compareItem(getLegs(),os.getLegs())) return true;
+        if(compareItem(getFeet(),os.getFeet())) return true;
+        if(compareItem(getOffHand(),os.getOffHand())) return true;
+        if(compareItem(getEars(),os.getEars())) return true;
+        if(compareItem(getNeck(),os.getNeck())) return true;
+        if(compareItem(getWrists(),os.getWrists())) return true;
+        if(compareItem(getLeftHand(),os.getLeftHand())) return true;
+        if(compareItem(getRightHand(),os.getRightHand())) return true;
+        if(compareItem(getJobCrystal(),os.getJobCrystal())) return true;
+        return false;
+    }
+
+    //returns true if item has changed
+    private boolean compareItem(GearItem item1, GearItem item2){
+        if(item1 != null && item2 == null) return true;
+        if(item2 != null && item1 == null) return true;
+        if(item1 == null && item2 == null) return false;
+        if(!item1.getItemId().contentEquals(item2.getItemId())) return true;
+        return false;
+    }
+
+    @Override
+    public GearSet clone() {
+        try {
+            GearSet clone = (GearSet) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

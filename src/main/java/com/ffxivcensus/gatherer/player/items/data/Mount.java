@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "mounts")
-public class Mount {
+public class Mount implements Cloneable{
 
     @Id
     private String id;
@@ -41,5 +41,16 @@ public class Mount {
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 '}';
+    }
+
+    @Override
+    public Mount clone() {
+        try {
+            Mount clone = (Mount) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

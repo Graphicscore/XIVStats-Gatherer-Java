@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import com.ffxivcensus.gatherer.player.items.data.GearItem;
@@ -168,10 +169,18 @@ public class PlayerBuilder {
      */
     public PlayerBean getPlayer(final int playerID, final PlayerBean existing) throws IOException, InterruptedException {
         // Initialize player object to return
+        PlayerBean tmpExisting = null;
         PlayerBean player = existing;
         if(existing == null) {
             player = new PlayerBean();
             player.setId(playerID);
+        } else {
+            tmpExisting = existing.clone();
+            tmpExisting.setGearSet(existing.getGearSet().clone());
+            //this is an ugly hack but since we are only comparing the count of minions and mounts it should be fine, i hope?
+            PlayerBean finalTmpExisting = tmpExisting;
+            playerMinionRepository.findAllByPlayerId(tmpExisting.getId()).forEach(playerMinion -> finalTmpExisting.getMinions().add(new Minion()));
+            playerMountRepository.findAllByPlayerId(tmpExisting.getId()).forEach(playerMount -> finalTmpExisting.getMounts().add(new Mount()));
         }
         // Declare HTML document
         try {
@@ -264,8 +273,16 @@ public class PlayerBuilder {
         } catch(CharacterDeletedException cde) {
             player.setCharacterStatus(CharacterStatus.DELETED);
         }
+
+        Date currentDate = new Date();
+        Date lastCheckedPlus30 = new Date(player.getLastChecked().getTime() + (ACTIVITY_RANGE_DAYS * ONE_DAY_IN_MILLIS));
+
+        player.setLastChecked(currentDate);
+        if(player.hasChanged(tmpExisting) || currentDate.after(lastCheckedPlus30)){
+            player.setActive(player.hasChanged(tmpExisting));
+        }
         // Update last checked date to today
-        player.setLastChecked(new Date());
+
         return player;
     }
 
