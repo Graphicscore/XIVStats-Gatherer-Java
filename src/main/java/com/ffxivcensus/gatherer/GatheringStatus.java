@@ -63,7 +63,7 @@ public class GatheringStatus {
      * 
      * @return Next available ID number.
      */
-    public synchronized int getNextId() {
+    public int getNextId() {
         int nextId = currentId + 1;
         currentId = nextId;
         return nextId;

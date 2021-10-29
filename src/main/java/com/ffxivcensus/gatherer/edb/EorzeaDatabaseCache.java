@@ -112,10 +112,8 @@ public class EorzeaDatabaseCache {
                     cmount.setName(mountName);
                     mount = Optional.of(cmount);
                     try {
-                        synchronized (this) {
-                            if(!repository.findById(id).isPresent()) {
-                                repository.save(cmount);
-                            }
+                        if(!repository.findById(id).isPresent()) {
+                            repository.save(cmount);
                         }
                     } catch (Exception ex){
                         LOG.error("Error caching mount {}", ex.getMessage());

@@ -613,10 +613,8 @@ public class PlayerBuilder {
             item.setCategory(toolTip.getElementsByClass("db-tooltip__item__category").get(0).text());
             item.setiLevel(Integer.parseInt(toolTip.getElementsByClass("db-tooltip__item__level").get(0).text().split(" ")[2]));
 
-            synchronized (this) {
-                if(!gearItemRepository.findById(dbId).isPresent()) {
-                    gearItemRepository.save(item);
-                }
+            if(!gearItemRepository.findById(dbId).isPresent()) {
+                gearItemRepository.save(item);
             }
 
             return item;
