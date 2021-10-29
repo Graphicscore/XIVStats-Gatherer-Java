@@ -42,10 +42,10 @@ public class LevemeteTask implements Runnable {
 
         // Check number of jobs present in the executor
         // if < 100
-        if(gathererExecutor.getQueue().size() < 100) {
+        if(gathererExecutor.getQueue().size() < 400) {
             // then
             // - while executor pool is not at 1000
-            while(gathererExecutor.getQueue().size() < 1000 && gatheringStatus.getCurrentId() < gatheringStatus.getFinishId()) {
+            while(gathererExecutor.getQueue().size() < 4000 && gatheringStatus.getCurrentId() < gatheringStatus.getFinishId()) {
                 // -- check out next ID
                 // -- create new gatherer
                 GathererTask task = gathererFactory.createGatherer();
