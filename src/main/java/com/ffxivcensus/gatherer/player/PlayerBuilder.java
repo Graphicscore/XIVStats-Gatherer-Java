@@ -275,7 +275,14 @@ public class PlayerBuilder {
         }
 
         Date currentDate = new Date();
-        Date lastCheckedPlus30 = new Date(player.getLastChecked().getTime() + (ACTIVITY_RANGE_DAYS * ONE_DAY_IN_MILLIS));
+
+        Date lastChecked = player.getLastChecked();
+        if(lastChecked == null){
+            LOG.warn("Last Checked was null, setting Date 0 as tmp");
+            lastChecked = new Date(0);
+        }
+
+        Date lastCheckedPlus30 = new Date(lastChecked.getTime() + (ACTIVITY_RANGE_DAYS * ONE_DAY_IN_MILLIS));
 
         player.setLastChecked(currentDate);
         if(player.hasChanged(tmpExisting) || currentDate.after(lastCheckedPlus30)){
