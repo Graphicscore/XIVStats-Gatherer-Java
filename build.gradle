@@ -47,7 +47,7 @@ dependencies {
     implementation 'org.json:json:20140107'
     implementation 'com.mashape.unirest:unirest-java:1.4.9'
     implementation 'commons-lang:commons-lang:2.6'
-    implementation 'com.zaxxer:HikariCP:2.6.2'
+    implementation 'com.zaxxer:HikariCP:2.7.9'
     implementation 'org.liquibase:liquibase-core:4.4.3'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
