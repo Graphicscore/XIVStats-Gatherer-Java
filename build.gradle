@@ -29,7 +29,7 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpmime:4.5.2'
 
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.9'
     /*implementation('org.springframework.boot:spring-boot-starter:1.5.1.RELEASE') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         exclude group: 'org.apache.tomcat', module: 'tomcat-jdbc'
